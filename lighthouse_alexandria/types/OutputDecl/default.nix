@@ -1,7 +1,6 @@
-{ lclInputs, types, ... }:
-with types;
-with lclInputs;
-baselib.mkRecordType {
+{ tclib, ... }:
+with tclib.types;
+tclib.mkRecordType {
   typeName = "OutputDecl";
   fieldsAndTypesAttrs = {
     nixpkgs = Attrset;

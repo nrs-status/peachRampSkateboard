@@ -10,7 +10,7 @@
   mkOutput = import ./mkOutput.nix { inherit prelib; };
   types = prelib.importPairAttrsOfDir {
     filePathForRecursiveFileListing = ./types;
-    inputsForImportPairs = { inherit prelib pkgslib; };
+    inputsForImportPairs = { inherit tclib prelib pkgslib; };
   };
 }
 
