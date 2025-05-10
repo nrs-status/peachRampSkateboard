@@ -1,6 +1,8 @@
-{ prelib }:
+{ prelib, tclib }:
 { envsdir, lclpkgsdir, outputDeclAttrs, activateDebug ? false }:
 with builtins;
+with tclib;
+with tclib.types;
 let total = rec {
 
   nameValuePairBootstrap = name: value: { inherit name value; };
@@ -18,23 +20,23 @@ let total = rec {
       config = declVal.nixpkgsConfig;
     };
     pkgslib = pkgs.lib;
-    lclInputs = declVal.lclInputs pkgs;
-    types = declVal.types lclInputs;
+    lclInputs = tc Attrset (declVal.lclInputs pkgs);
+    types =  tc Attrset (declVal.types lclInputs);
     inherit system;
-    packagesToProvide = declVal.packagesToProvide;
-    envsToProvide = declVal.envsToProvide;
-    lclPkgs = import ./mkLclPkgs.nix {
+    packagesToProvide = tc (List String) declVal.packagesToProvide;
+    envsToProvide = tc (List String) declVal.envsToProvide;
+    lclPkgs = tc Attrset (import ./mkLclPkgs.nix {
       inherit pkgslib pkgs prelib types lclpkgsdir lclInputs system;
-    };
-    envsAttrs = import ./mkEnvsAttrs.nix {
+    });
+    envsAttrs = tc Attrset (import ./mkEnvsAttrs.nix {
       inherit lclPkgs prelib envsdir pkgslib pkgs lclInputs types;
-    };
+    });
   })); });
 
-  selectedPackagesAux = initReaderWith mkSelectedPackages; #for debug
+  selectedPackagesAux = initReaderWith mkSelectedPackages; #is separate for easier debug
   selectedPackages = mapAttrs selectedPackagesAux outputDeclAttrs;
 
-  selectedEnvsAux = initReaderWith mkSelectedEnvs; #for debug
+  selectedEnvsAux = initReaderWith mkSelectedEnvs; #is separate for easier debug
   selectedEnvs = mapAttrs selectedEnvsAux outputDeclAttrs;
 
   deepMerge = import ./deepMerge.nix;

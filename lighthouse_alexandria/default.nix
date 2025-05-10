@@ -7,7 +7,7 @@
   deepMerge = import ./deepMerge.nix;
   mkMockHMOutputAndExtractFiles = import ./mkMockHMOutputAndExtractFiles.nix;
   mkHMOutput = import ./mkHMOutput.nix;
-  mkOutput = import ./mkOutput.nix { inherit prelib; };
+  mkOutput = import ./mkOutput.nix { inherit prelib tclib; };
   types = prelib.importPairAttrsOfDir {
     filePathForRecursiveFileListing = ./types;
     inputsForImportPairs = { inherit tclib prelib pkgslib; };
