@@ -14,7 +14,7 @@ let
       }) fieldsAndTypesAttrs;
     final = {
       inherit typeName;
-      preds = (attrsValues attrsMapping) ++ [
+      preds = (attrValues attrsMapping) ++ [
         (mkHasExactFieldsPredicate { fields = attrNames attrsMapping; })
       ];
     };
