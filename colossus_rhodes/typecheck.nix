@@ -3,7 +3,8 @@
 with builtins;
 let total = rec {
   tcPred = pred: pred.handler {
-    inherit target type;
+    inherit target;
+    typeName = type.typeName;
   };
   predMap = map tcPred type.preds;
   evalPreds = seq (foldl' (acc: next: seq next {}) {} predMap) target;
