@@ -1,5 +1,4 @@
-{ tclib, pkgslib, prelib }:
-{
+{ tclib, pkgslib, prelib }: {
   concatAttrSets = import ./concatAttrSets.nix;
   attrsSubtype = import ./attrsSubtype.nix;
   extendEnv = import ./extendEnv.nix { inherit prelib pkgslib; };
@@ -9,5 +8,9 @@
   mkMockHMOutputAndExtractFiles = import ./mkMockHMOutputAndExtractFiles.nix;
   mkHMOutput = import ./mkHMOutput.nix;
   mkOutput = import ./mkOutput.nix { inherit prelib; };
+  types = prelib.importPairAttrsOfDir {
+    filePathForRecursiveFileListing = ./types;
+    inputsForImportPairs = { inherit prelib pkgslib; };
+  };
 }
 
