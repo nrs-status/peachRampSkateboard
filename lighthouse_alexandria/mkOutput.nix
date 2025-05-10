@@ -31,8 +31,12 @@ let total = rec {
     };
   })); });
 
-  selectedPackages = mapAttrs (initReaderWith mkSelectedPackages) outputDeclAttrs;
-  selectedEnvs = mapAttrs (initReaderWith mkSelectedEnvs) outputDeclAttrs;
+  selectedPackagesAux = initReaderWith mkSelectedPackages; #for debug
+  selectedPackages = mapAttrs selectedPackagesAux outputDeclAttrs;
+
+  selectedEnvsAux = initReaderWith mkSelectedEnvs; #for debug
+  selectedEnvs = mapAttrs selectedEnvsAux outputDeclAttrs;
+
   deepMerge = import ./deepMerge.nix;
   foldIntoPackagesVal = builtins.foldl' deepMerge {} (attrValues selectedPackages);
   foldIntoDevShellsVal = builtins.foldl' deepMerge {} (attrValues selectedEnvs);
