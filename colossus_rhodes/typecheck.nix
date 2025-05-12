@@ -8,19 +8,8 @@ let
     partialTypeValidation = partiallyValidateType { target = type; };
     allTrue = import ./allElmsOfListAreTrue.nix;
 
-    #nonAttrs
-    preds = foldl' (acc: next: acc ++ [ next.pred ]) [ ] type.spec;
-    handlePred = pred:
-      if pred.func target then
-        target
-      else
-        abort
-        "typecheck.nix: failure to satisfy pred ${pred.predName} while typechecking for ${type.typeName}";
-    thunkedTcNonAttrs = map (x: handlePred x) preds;
 
-    #attrs
     paths = foldl' (acc: next: acc ++ [ next.path ]) [ ] type.spec;
-    isAnAttrsType = !(allTrue (map (x: 0 == length x) paths));
     hasPaths = map (x: pkgslib.attrsets.hasAttrByPath x target) paths;
     handleHasPaths = if allTrue hasPaths then
       target
@@ -49,9 +38,6 @@ let
         pkgslib.generators.toPretty {} onlyFailures
       }";
 
-    final = if isAnAttrsType then
-      seq (seq handleHasPaths handleValidationAtPath) target
-    else
-      seq thunkedTcNonAttrs target;
+    final = seq (seq handleHasPaths handleValidationAtPath) target;
   };
 in prelib.wrapDebug { inherit total activateDebug; }
