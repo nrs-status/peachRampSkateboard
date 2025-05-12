@@ -4,7 +4,7 @@
   spec = [
     {
       path = [];
-      pred = import ../../predicates/isAttrs;
+      pred = import ../../predicates/isAttrs {};
     }
   ];
 }

@@ -4,7 +4,7 @@
   spec = [
     {
       path = [];
-      pred = import ../../predicates/isNixFunction;
+      pred = import ../../predicates/isNixFunction {};
     }
   ];
 }
