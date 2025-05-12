@@ -1,3 +1,4 @@
+{ ... }:
 {
   typeName = "Attrset";
   spec = [

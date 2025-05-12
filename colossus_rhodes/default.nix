@@ -6,17 +6,13 @@ rec {
   predicates = prelib.importPairAttrsOfDir {
     filePathForRecursiveFileListing = ./predicates;
     inputsForImportPairs = {
-      lclInputs = {
         inherit prelib pkgslib; 
-      };
     };
   };
   types = prelib.importPairAttrsOfDir {
     filePathForRecursiveFileListing = ./types;
     inputsForImportPairs = {
-      lclInputs = {
         inherit prelib pkgslib;
-      };
     };
   };
 }
