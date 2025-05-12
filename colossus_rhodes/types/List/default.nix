@@ -9,7 +9,7 @@ in {
   spec = [
     {
       path = [ ];
-      pred = import ../../predicates/isList;
+      pred = import ../../predicates/isList {};
     }
     {
       path = [ ];
