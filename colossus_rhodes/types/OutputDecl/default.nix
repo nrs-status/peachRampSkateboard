@@ -1,9 +1,9 @@
 { pkgslib, prelib }:
 let
   List = import ../List { inherit pkgslib prelib; };
-  String = import ../String;
-  NixFunction = import ../NixFunction;
-  Attrset = import ../Attrset;
+  String = import ../String {};
+  NixFunction = import ../NixFunction {};
+  Attrset = import ../Attrset {};
   tf = import ../../typedFieldPathPredPair.nix { inherit prelib pkgslib; };
 in {
   typeName = "OutputDecl";
