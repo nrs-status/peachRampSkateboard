@@ -7,13 +7,12 @@ let total = rec {
 
   nameValuePairBootstrap = name: value: { inherit name value; };
   genAttrsBootstrap = names: f: listToAttrs (map (n: nameValuePairBootstrap n (f n)) names);
-  reader = form: form;
 
   mkSelectedEnvs = reader: reader.pkgslib.attrsets.genAttrs reader.envsToProvide (label: reader.envsAttrs.${label});
   mkSelectedPackages = reader: import ./mkSelectedPackages.nix {
     inherit lclpkgsdir reader prelib;
   };
-  initReaderWith = funcToApply: declKey: declVal: genAttrsBootstrap declVal.supportedSystems (system: { ${declKey} = funcToApply (reader (rec {
+  initReaderWith = funcToApply: declKey: declVal: genAttrsBootstrap declVal.supportedSystems (system: { ${declKey} = funcToApply (rec {
     nixpkgs = declVal.nixpkgs;
     pkgs = import declVal.nixpkgs {
       inherit system;
@@ -31,7 +30,7 @@ let total = rec {
     envsAttrs = tc Attrset (import ./mkEnvsAttrs.nix {
       inherit lclPkgs prelib envsdir pkgslib pkgs lclInputs types;
     });
-  })); });
+  }); });
 
   selectedPackagesAux = initReaderWith mkSelectedPackages; #is separate for easier debug
   selectedPackages = mapAttrs selectedPackagesAux outputDeclAttrs;
